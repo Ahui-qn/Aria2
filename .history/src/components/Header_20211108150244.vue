@@ -1,0 +1,75 @@
+<style scoped lang="less">
+    .classify {
+        margin: 20px 20px 0 20px;
+        padding-bottom: 10px;
+        font-size: 16px;
+        position: relative;
+        height: 30px;
+        border-bottom: 1px rgba(198, 198, 198, 0.715) solid;
+        div.container {
+            position: absolute;
+            top: 0;
+            left: 40%;
+            display: flex;
+            width: 200px;
+            justify-content: space-between;
+            div {
+                position: relative;
+                i {
+                    position: absolute;
+                    font-size: 12px;
+                    color: rgb(94, 94, 94);
+                }
+                i:nth-of-type(1) {
+                    top: 3px;
+                }
+                i:nth-of-type(2) {
+                    top: 9px;
+                }
+            }
+        }
+}
+</style>
+<template>
+    <div>
+        <header class="classify">
+            <span>文件名</span>
+            <div class="container">
+                <div @click="sizeSort($route.path)">
+                    <span >大小</span>
+                    <i class="el-icon-caret-top"></i>
+                    <i class="el-icon-caret-bottom"></i>
+                </div>
+                <div @click="progressSort($route.path,'2')">
+                    <span >进度</span>
+                    <i class="el-icon-caret-top"></i>
+                    <i class="el-icon-caret-bottom"></i>
+                </div>
+                <div v-show="isShowSpeed">
+                    <span>速度</span>
+                     <i class="el-icon-caret-top"></i>
+                     <i class="el-icon-caret-bottom"></i>
+                </div>
+            </div>
+        </header>
+    </div>
+</template>
+<script>
+import {mapState, mapMutations} from 'vuex'
+
+export default {
+    name: 'Header',
+    props: {
+        isShowSpeed: {
+            type: Boolean,
+            required: false,
+            default: true
+        }
+    },
+    methods : {
+        ...mapMutations(['sizeSort', 'progressSort']),
+    },
+    computed : {
+    },
+}
+</script>

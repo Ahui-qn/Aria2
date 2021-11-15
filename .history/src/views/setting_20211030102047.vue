@@ -1,0 +1,19 @@
+<template>
+    <div>
+        <Settings/>
+    </div>
+</template>
+
+<script>
+import Settings from '../components/Settings.vue'
+
+export default {
+    name: 'Setting',
+    components : {
+        Settings,
+    },
+    mounted() {
+        console.log(this.$route)
+    }
+}
+</script>

@@ -1,0 +1,82 @@
+<template>
+    <div class="downloading">
+        <!-- <div class="edit-status">
+            <button @click="editStatus('pause')">暂停</button>    可以使用element的通知来做 或者消息提示
+            <button @click="editStatus('unpause')">开始</button>
+            <button @click="editStatus('remove')">删除</button>
+            <button @click="selectAll">全选</button>
+            <label ><input type="text" :value='search' @input="handleSearchChange">搜索</label>
+        </div> -->
+        <ul>
+
+           <label> 
+                <li v-for="(task) of showSearch" class="task" :key="task.gid"  @click="selectedSwitch(task)"> 
+                    <input type="checkbox" :checked="selected.includes(task.gid)">  <!-- checked状态由selected有没有这个任务决定-->
+                    <span>{{getLinkName(task)}}</span> —— 
+                    <span>{{getProgress(task)}}</span> —— 
+                    <span>{{getDownloadSpeed(task)}}</span>- - - -
+                    <router-link :to="{name:'TaskDetails', params: {gid: task.gid}}">详情</router-link>
+                </li>
+            </label>
+        </ul>
+    </div>
+</template> 
+
+<script>
+import { mapState , mapMutations, mapGetters,  mapActions} from "vuex"
+export default {
+    name:'downloading',
+    data() {
+        return {}
+    },
+    mounted() {
+        this.$store.dispatch('asyncUpdateList')
+        this.IntervalId = setInterval(() => {
+            this.$store.dispatch('asyncUpdateList')
+        },1000)
+    },
+
+    beforeDestroy() {
+        clearInterval(this.IntervalId)
+    },
+    computed : { 
+        ...mapState(['search','tasks','selected']),
+        ...mapGetters([
+            'showSearch',
+            ]),
+    },
+    methods :{
+        ...mapActions(['editStatus']),
+        ...mapMutations([   // 函数作用注释在store里
+            'selectedSwitch',
+            'selectAll',
+            'getLinkName',
+            'getProgress',
+            'getDownloadSpeed',
+            'updateList',
+            'handleSearchChange',
+            ]),
+    },
+}
+</script>
+<style scoped lang="less"> 
+    .downloading {
+        margin-top: 20px;
+        margin-left: 50px;
+        .edit-status {
+            button{
+                margin-right:5px ;
+            }
+        }
+        ul {
+            padding-left:0 ;
+            li.task {
+                list-style: none;
+                width: 100%;
+                height: 40px;
+                border-bottom: 1px solid red;
+                line-height: 40px;
+            }
+        }
+    }
+</style>
